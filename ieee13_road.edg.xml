@@ -1,0 +1,13 @@
+<edges>
+    <edge id="L_650_632" from="650" to="632" numLanes="1" speed="13.89" length="5000"/>
+    <edge id="L_632_671" from="632" to="671" numLanes="1" speed="13.89" length="8000"/>
+    <edge id="L_671_680" from="671" to="680" numLanes="1" speed="13.89" length="5000"/>
+    <edge id="L_632_645" from="632" to="645" numLanes="1" speed="13.89" length="3000"/>
+    <edge id="L_645_646" from="645" to="646" numLanes="1" speed="13.89" length="2000"/>
+    <edge id="L_671_684" from="671" to="684" numLanes="1" speed="13.89" length="3000"/>
+    <edge id="L_684_611" from="684" to="611" numLanes="1" speed="13.89" length="3000"/>
+    <edge id="L_684_652" from="684" to="652" numLanes="1" speed="13.89" length="5000"/>
+    <edge id="L_632_633" from="632" to="633" numLanes="1" speed="13.89" length="2000"/>
+    <edge id="L_633_634" from="633" to="634" numLanes="1" speed="13.89" length="2000"/>
+    <edge id="L_671_675" from="671" to="675" numLanes="1" speed="13.89" length="5000"/>
+</edges>
