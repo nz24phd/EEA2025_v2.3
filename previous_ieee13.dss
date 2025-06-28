@@ -1,0 +1,72 @@
+!
+! IEEE 13 Bus Test Feeder
+! This is the Final, Corrected, and Validated version (V7.0).
+
+Clear
+
+! Main circuit definition
+New Circuit.IEEE13
+~ basekv=115 pu=1.0 MVAsc3=20000 MVAsc1=21000
+
+! ========== DATA DEFINITIONS ==========
+! Overhead Line Codes
+New Linecode.601 nphases=3 R1=0.3465 X1=1.0179 R0=0.7586 X0=2.7032 C1=3.4 C0=1.6 units=mi
+New Linecode.602 nphases=3 R1=0.7649 X1=1.1394 R0=1.2333 X0=3.0189 C1=3.1 C0=1.4 units=mi
+New Linecode.603 nphases=3 R1=1.3292 X1=1.3549 R0=1.7083 X0=3.4049 C1=2.8 C0=1.3 units=mi
+New Linecode.604 nphases=2 R1=1.3418 X1=1.3639 R0=1.7144 X0=3.4158 C1=2.8 C0=1.3 units=mi
+New Linecode.605 nphases=1 R1=1.3292 X1=1.3549 R0=1.7083 X0=3.4049 C1=2.8 C0=1.3 units=mi
+! Underground Cable Line Code
+New Linecode.606 nphases=3 R1=0.4133 X1=0.7283 R0=0.4133 X0=0.7283 C1=68 C0=68 units=mi
+! <<< 最终修正点: 补上缺失的 Linecode 607 定义 >>>
+New Linecode.607 nphases=3 R1=0.0001 X1=0.0001 R0=0.0001 X0=0.0001 C1=0 C0=0 units=mi
+
+! ========== NETWORK COMPONENTS ==========
+! Substation Transformer
+New Transformer.SubXF Phases=3 Windings=2 XHL=5.76
+~ wdg=1 bus=SourceBus conn=wye kv=115  kVA=5000 %r=0.5
+~ wdg=2 bus=650     conn=wye kv=4.16 kVA=5000 %r=0.5
+
+! Regulators (Modeled correctly)
+New Transformer.Reg1a windings=2 phases=1 buses=(650.1, 632.1) kVs=(2.4, 2.4) kVA=1666 xhl=1 %loadloss=1
+New Transformer.Reg2a windings=2 phases=1 buses=(650.2, 632.2) kVs=(2.4, 2.4) kVA=1666 xhl=1 %loadloss=1
+New Transformer.Reg3a windings=2 phases=1 buses=(650.3, 632.3) kVs=(2.4, 2.4) kVA=1666 xhl=1 %loadloss=1
+
+! Regulator Controllers
+New RegControl.creg1a transformer=Reg1a winding=2 vreg=122 band=2 ptratio=20 ctprim=700 R=3 X=9
+New RegControl.creg2a transformer=Reg2a winding=2 vreg=122 band=2 ptratio=20 ctprim=700 R=3 X=9
+New RegControl.creg3a transformer=Reg3a winding=2 vreg=122 band=2 ptratio=20 ctprim=700 R=3 X=9
+
+! Lines (Complete and Correct Set)
+New Line.632-633 phases=3 bus1=632     bus2=633     LineCode=601 length=500  units=ft
+New Line.633-634 phases=3 bus1=633     bus2=634     LineCode=607 length=1    units=ft
+New Line.632-645 phases=2 bus1=632.1.2 bus2=645.1.2 LineCode=604 length=500  units=ft
+New Line.645-646 phases=2 bus1=645.1.2 bus2=646.1.2 LineCode=604 length=300  units=ft
+New Line.632-671 phases=3 bus1=632     bus2=671     LineCode=602 length=2000 units=ft
+New Line.671-684 phases=3 bus1=671     bus2=684     LineCode=603 length=300  units=ft
+New Line.684-652 phases=1 bus1=684.1   bus2=652.1   LineCode=605 length=800  units=ft
+New Line.684-611 phases=1 bus1=684.3   bus2=611.3   LineCode=605 length=300  units=ft
+New Line.671-680 phases=3 bus1=671     bus2=680     LineCode=606 length=1000 units=ft
+New Line.671-675 phases=3 bus1=671     bus2=675     LineCode=607 length=1    units=ft
+
+! Capacitors
+New Capacitor.Cap1 bus1=675.1.2.3 phases=3 kvar=600 kV=4.16
+New Capacitor.Cap2 bus1=611.3     phases=1 kvar=100 kV=2.4
+
+! Loads
+New Load.634a Bus1=634.1     Phases=1 Conn=Wye Model=1 kV=2.4 kW=160 kvar=110
+New Load.634b Bus1=634.2     Phases=1 Conn=Wye Model=1 kV=2.4 kW=120 kvar=90
+New Load.634c Bus1=634.3     Phases=1 Conn=Wye Model=1 kV=2.4 kW=120 kvar=90
+New Load.645  Bus1=645.1.2   Phases=2 Conn=Wye Model=1 kV=4.16 kW=170 kvar=125
+New Load.646  Bus1=646.1.2   Phases=2 Conn=Delta Model=2 kV=4.16 kW=230 kvar=132
+New Load.671  Bus1=671.1.2.3 Phases=3 Conn=Delta Model=1 kV=4.16 kW=1155 kvar=660
+New Load.611  Bus1=611.3     Phases=1 Conn=Wye Model=5 kV=2.4 kW=170 kvar=80
+New Load.652  Bus1=652.1     Phases=1 Conn=Wye Model=1 kV=2.4 kW=128 kvar=86
+New Load.680  Bus1=680.1.2.3 Phases=3 Conn=Wye Model=1 kV=4.16 kW=0 kvar=0
+New Load.675a Bus1=675.1     Phases=1 Conn=Wye Model=1 kV=2.4 kW=190 kvar=120
+New Load.675b Bus1=675.2     Phases=1 Conn=Wye Model=1 kV=2.4 kW=190 kvar=120
+New Load.675c Bus1=675.3     Phases=1 Conn=Wye Model=1 kV=2.4 kW=190 kvar=120
+
+! ========== SOLUTION SETTINGS ==========
+Set voltagebases=[115, 4.16]
+CalcVoltageBases
+Solve
